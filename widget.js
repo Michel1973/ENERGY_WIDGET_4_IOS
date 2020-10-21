@@ -74,7 +74,7 @@ function columnGraph(data, width, height, colour) {
     context.fillRect(rect)
 	//Nachfolgend wird der Balken für das aktuelle Zeitintervall ermittelt und markiert
     if(time_from === value.start_timestamp) { 
-       if(index === 0) { let marker = 0 }
+       if(index === 0) { var marker = 0 }
        else { marker = ( (index - 1 ) * 2 + 1 ) * w - 5; }
        context.drawText("🔺", new Point( marker, height + 10 )) }
     
