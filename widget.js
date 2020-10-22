@@ -2,7 +2,7 @@
 // Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore
 //
 // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
-// Version 0.2 beta
+// Version 0.21 beta
 // License: Feel free to modify :-)
 const mwst         = 1.16         //Aktueller Steuersatz
 const price_unit   = 'Cent/kWh'   //Preis Einheit
@@ -67,7 +67,7 @@ function columnGraph(data, width, height, colour) {
     if(h > orange_level) { context.setFillColor(Color.orange()) }
     if(h > red_level) { context.setFillColor(Color.red()) }
     
-    let x = (index * 2 + 1) * w
+    let x = (index * 2 ) * w
     let y = height - h
 
     let rect = new Rect(x, y, w, h)
@@ -75,7 +75,7 @@ function columnGraph(data, width, height, colour) {
 	//Nachfolgend wird der Balken für das aktuelle Zeitintervall ermittelt und markiert
     if(time_from === value.start_timestamp) { 
        if(index === 0) { var marker = 0 }
-       else { marker = ( (index - 1 ) * 2 + 1 ) * w + 10; }
+       else { marker = ( (index - 1 ) * 2  ) * w + 10; }
        context.drawText("🔺", new Point( marker, height + 10 )) }
     
   })
