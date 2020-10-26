@@ -1,7 +1,7 @@
 
 // JavaScript code to show up an forecast of the energy costs as widget in iOS.
 // Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore // // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
-// Version 0.22 beta
+// Version 0.24 beta
 // License: Feel free to modify :-)
 
 const mwst         = 1.16         //Aktueller Steuersatz
