@@ -1,8 +1,7 @@
+
 // JavaScript code to show up an forecast of the energy costs as widget in iOS.
-// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore
-//
-// This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
-// Version 0.21 beta
+// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore // // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
+// Version 0.22 beta
 // License: Feel free to modify :-)
 
 const mwst         = 1.16         //Aktueller Steuersatz
@@ -27,25 +26,23 @@ var number_of_lines = raw_data_day.data.length;
 
 var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf grün setzen.
  
-// Block mit Funktionen die benötigt werden
-// Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden
-function financial(x) {
+// Block mit Funktionen die benötigt werden // Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden function financial(x) {
   return Number.parseFloat(x).toFixed(2); }
  
-// Funktion um den niedrigsten Tagespreis zu ermitteln
-function min() {
+// Funktion um den niedrigsten Tagespreis zu ermitteln function min() {
   let lowest_rate  = 99999
   for (i in raw_data_day.data)
   {
   let price = raw_data_day.data[i].marketprice;
-  if (price < lowest_rate) { lowest_rate = price }
-    }
+  if (price < lowest_rate) { lowest_rate = price;
+                             var best_price_intervall = new Date(raw_data_day.data[i].start_timestamp).getHours() + ":00 - " + new Date(raw_data_day.data[i].end_timestamp).getHours() + ":00"
+                            
+      }
+  }
   if (lowest_rate === 99999) { lowest_rate = 0 }
-  return lowest_rate / 10 * mwst
-}
+  return [ lowest_rate / 10 * mwst, best_price_intervall] } 
  
-//Funktion um den höchsten Tagespreis zu ermitteln
-function max() {
+//Funktion um den höchsten Tagespreis zu ermitteln function max() {
   let highest_rate  = 0
   for (i in raw_data_day.data)
   {
@@ -55,11 +52,10 @@ function max() {
   return highest_rate / 10 * mwst
 }
  
-//Funktion um das Balkendiagramm zu zeichnen
-function columnGraph(data, width, height, colour) {
-  let maxi = financial(max())
+//Funktion um das Balkendiagramm zu zeichnen function columnGraph(data, width, height, colour) {
+  let maxi = financial(max());
   let context = new DrawContext()
-  context.size = new Size(width, height+30)
+  context.size = new Size(width, height+70)
   context.opaque = false
   context.setFillColor(colour)
   data.forEach((value, index) => {
@@ -77,16 +73,14 @@ function columnGraph(data, width, height, colour) {
  
     let rect = new Rect(x, y, w, h)
     context.fillRect(rect)
-   
-  })
+    })
   return context
 }
 
 //Verarbeitungsblock
-let minimum = financial(min()) //Runde den niedrigsten Tagespreise auf zwei Nachkommastellen
-let maximum = financial(max()) //Runde den höchsten Tagespreis auf zwei Nachkommastellen
+ let minimum = financial(min()[0]) //Runde den niedrigsten Tagespreise auf zwei Nachkommastellen  let maximum = financial(max()) //Runde den höchsten Tagespreis auf zwei Nachkommastellen
  
- 
+
 // das Widget
 let widget = await createWidget()
 if (!config.runsInWidget) {
@@ -95,6 +89,7 @@ if (!config.runsInWidget) {
  
 Script.setWidget(widget)
 Script.complete()
+
  
 async function createWidget(items) {
   let location
@@ -120,14 +115,19 @@ async function createWidget(items) {
   day = list.addDate(new Date(tomorrow))
   day.font = Font.systemFont(12)
  
-  list.addSpacer()
   
-  if (number_of_lines < 24) {
-     
-    var label = list.addText("Preise noch nicht bekannt")
+  if (number_of_lines < 24) { 
+      list.addSpacer();
+      var label = list.addText("🔮Preise noch nicht bekannt")
         label.font = Font.boldSystemFont(14)
-        label.textColor = Color.red()
-}
+        label.textColor = Color.red() }
+   else { label = list.addText("Bestpreis:" )
+        label.font = Font.systemFont(12)
+        let label_bp = list.addText(min()[1])
+        label_bp.font = Font.systemFont(12)  
+        }
+           
+    
  
   //Anzeige des Balkendiagramms
   let image = columnGraph(raw_data_day["data"], 400, max_level, Color.green()).getImage()
