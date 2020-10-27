@@ -1,6 +1,6 @@
-
 // JavaScript code to show up the actual energy costs as widget in iOS.
-// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore // // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
+// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore  
+// This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
 // Version 0.24 beta
 // License: Feel free to modify :-)
 const mwst         = 1.16         //Aktueller Steuersatz
@@ -11,7 +11,8 @@ const orange_level = 30           //Schwellwert ab dem der aktuelle Preis bzw. d
  
 let actual_hour             = new Date().getHours( );
 let to_hour                 = actual_hour +1;
-let actual_year             = new Date().getFullYear( ); let actual_month = new Date().getMonth( ); let actual_date  = new Date().getDate( );
+let actual_year             = new Date().getFullYear( ); let actual_month = new Date().getMonth( ); 
+let actual_date             = new Date().getDate( );
 var time_from               = new Date(actual_year, actual_month, actual_date, actual_hour, 0).getTime();
 let time_to                 = new Date(actual_year, actual_month, actual_date, to_hour, 0).getTime();
 let actual_price_url        = "https://api.awattar.de/v1/marketdata?start="+time_from+"&end="+time_to;
@@ -20,12 +21,15 @@ let day_price_url           = "https://api.awattar.de/v1/marketdata?start="+day_
  
 var raw_data                = await new Request(actual_price_url).loadJSON(); //Aktuellen Preis via API holen
 var raw_data_day            = await new Request(day_price_url).loadJSON();    //Preis für den aktuellen Tag via API holen
-var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf grün setzen.
+var price_color             = Color.green();                                  //Farbe für den aktuellen Preis inital auf grün setzen.
  
-// Block mit Funktionen die benötigt werden // Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden function financial(x) {
+// Block mit Funktionen die benötigt werden 
+// Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden 
+function financial(x) {
   return Number.parseFloat(x).toFixed(2); }
  
-// Funktion um den niedrigsten Tagespreis zu ermitteln function min() {
+// Funktion um den niedrigsten Tagespreis zu ermitteln 
+function min() {
   let lowest_rate  = 99999
   for (i in raw_data_day.data)
   {
@@ -35,7 +39,8 @@ var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf gr
   return lowest_rate / 10 * mwst
 }
  
-//Funktion um den höchsten Tagespreis zu ermitteln function max() {
+//Funktion um den höchsten Tagespreis zu ermitteln 
+function max() {
   let highest_rate  = 0
   for (i in raw_data_day.data)
   {
@@ -45,7 +50,8 @@ var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf gr
   return highest_rate / 10 * mwst
 }
  
-//Funktion um das Balkendiagramm zu zeichnen function columnGraph(data, width, height, colour) {
+//Funktion um das Balkendiagramm zu zeichnen 
+function columnGraph(data, width, height, colour) {
   let maxi = financial(max());
   let mini = financial(min());
   let context = new DrawContext()
@@ -81,8 +87,11 @@ var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf gr
 }
  
 //Verarbeitungsblock
-let minimum = financial(min()) //Runde den niedrigsten Tagespreise auf zwei Nachkommastellen let maximum = financial(max()) //Runde den höchsten Tagespreis auf zwei Nachkommastellen
- 
+let minimum = financial(min()) 
+
+//Runde den niedrigsten Tagespreise auf zwei Nachkommastellen 
+
+let maximum = financial(max())          //Runde den höchsten Tagespreis auf zwei Nachkommastellen
 let attr = raw_data.data[0].marketprice //Ermittle den aktuellen Strompreis
 let unit = raw_data.data[0].unit        //Ermittle die zugehörige Preiseinheit
 var actual_price = attr / 10 * mwst     //Errechne den aktuellen Strompreis (brutto)
