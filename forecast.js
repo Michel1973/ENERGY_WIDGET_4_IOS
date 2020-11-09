@@ -1,8 +1,8 @@
-
 // JavaScript code to show up an forecast of the energy costs as widget in iOS.
-// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore  
+// Prerequisites: Install the "SCRIPTABLE" app from the iOS appstore
+//
 // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
-// Version 0.24 beta
+// Version 0.22 beta
 // License: Feel free to modify :-)
 
 const mwst         = 1.16         //Aktueller Steuersatz
@@ -27,15 +27,16 @@ var number_of_lines = raw_data_day.data.length;
 
 var price_color  = Color.green(); //Farbe für den aktuellen Preis inital auf grün setzen.
  
-// Block mit Funktionen die benötigt werden 
-// Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden 
+// Block mit Funktionen die benötigt werden
+// Funktion um Dezimalzahlen auf zwei Nachkommastellen zu runden
 function financial(x) {
   return Number.parseFloat(x).toFixed(2); }
  
-// Funktion um den niedrigsten Tagespreis zu ermitteln function min() {
+// Funktion um den niedrigsten Tagespreis zu ermitteln
+function min() {
   let lowest_rate  = 99999
   for (i in raw_data_day.data)
-  {
+  { 
   let price = raw_data_day.data[i].marketprice;
   if (price < lowest_rate) { lowest_rate = price;
                              var best_price_intervall = new Date(raw_data_day.data[i].start_timestamp).getHours() + ":00 - " + new Date(raw_data_day.data[i].end_timestamp).getHours() + ":00"
@@ -43,10 +44,11 @@ function financial(x) {
       }
   }
   if (lowest_rate === 99999) { lowest_rate = 0 }
-  return [ lowest_rate / 10 * mwst, best_price_intervall] } 
+  return [ lowest_rate / 10 * mwst, best_price_intervall]
+} 
  
-//Funktion um den höchsten Tagespreis zu ermitteln 
-  function max() {
+//Funktion um den höchsten Tagespreis zu ermitteln
+function max() {
   let highest_rate  = 0
   for (i in raw_data_day.data)
   {
@@ -56,7 +58,7 @@ function financial(x) {
   return highest_rate / 10 * mwst
 }
  
-//Funktion um das Balkendiagramm zu zeichnen 
+//Funktion um das Balkendiagramm zu zeichnen
 function columnGraph(data, width, height, colour) {
   let maxi = financial(max());
   let context = new DrawContext()
@@ -83,8 +85,7 @@ function columnGraph(data, width, height, colour) {
 }
 
 //Verarbeitungsblock
- let minimum = financial(min()[0]) //Runde den niedrigsten Tagespreise auf zwei Nachkommastellen  
- 
+ let minimum = financial(min()[0]) //Runde den niedrigsten Tagespreise auf zwei Nachkommastellen
  let maximum = financial(max()) //Runde den höchsten Tagespreis auf zwei Nachkommastellen
  
 
