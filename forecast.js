@@ -12,13 +12,12 @@ const red_level    = 40           //Schwellwert ab dem der aktuelle Preis bzw. d
 const orange_level = 30           //Schwellwert ab dem der aktuelle Preis bzw. der zugehörige Balken orange eingefärbt wird. Kleinere Werte werden grün eingefärbt.
  
 
-let actual_year             = new Date().getFullYear( ); let actual_month = new Date().getMonth( ); 
 const today                 = new Date();
 const tomorrow              = new Date(today);
-tomorrow.setDate(tomorrow.getDate()+1)
-let date_tomorrow           = tomorrow.getDate();
+tomorrow.setDate(tomorrow.getDate()+1);
+tomorrow.setHours(0,0,0,0);
 
-let day_from                = new Date(actual_year, actual_month, date_tomorrow , 0, 0).getTime();
+let day_from                = tomorrow.getTime();
 let day_price_url           = "https://api.awattar.de/v1/marketdata?start="+day_from;
 
 var raw_data_day            = await new Request(day_price_url).loadJSON();    //Preis für den aktuellen Tag via API holen
