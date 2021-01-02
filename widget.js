@@ -3,7 +3,7 @@
 // This script uses the API from aWATTar (see https://www.awattar.com/services/api) for further details.
 // Version 0.24 beta
 // License: Feel free to modify :-)
-const mwst         = 1.16         //Aktueller Steuersatz
+const mwst         = 1.19         //Aktueller Steuersatz
 const price_unit   = 'Cent/kWh'   //Preis Einheit
 const max_level    = 50           //Höchster rechnerischer Schwellwert. Diesen Wert bitte nicht ändern
 const red_level    = 40           //Schwellwert ab dem der aktuelle Preis bzw. der zugehörige Balken rot eingefärbt wird
