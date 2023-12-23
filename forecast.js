@@ -19,7 +19,7 @@ tomorrow.setDate(tomorrow.getDate()+1)
 let date_tomorrow           = tomorrow.getDate();
 
 let day_from                = new Date(actual_year, actual_month, date_tomorrow , 0, 0).getTime();
-let day_price_url           = "https://api.awattar.de/v1/marketdata?start="+day_from;
+let day_price_url           = "https://api.awattar.at/v1/marketdata?start="+day_from;
 
 var raw_data_day            = await new Request(day_price_url).loadJSON();    //Preis für den aktuellen Tag via API holen
 
