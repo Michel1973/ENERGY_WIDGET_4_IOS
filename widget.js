@@ -15,9 +15,9 @@ let actual_year             = new Date().getFullYear( ); let actual_month = new 
 let actual_date             = new Date().getDate( );
 var time_from               = new Date(actual_year, actual_month, actual_date, actual_hour, 0).getTime();
 let time_to                 = new Date(actual_year, actual_month, actual_date, to_hour, 0).getTime();
-let actual_price_url        = "https://api.awattar.de/v1/marketdata?start="+time_from+"&end="+time_to;
+let actual_price_url        = "https://api.awattar.at/v1/marketdata?start="+time_from+"&end="+time_to;
 let day_from                = new Date(actual_year, actual_month, actual_date, 0, 0).getTime();
-let day_price_url           = "https://api.awattar.de/v1/marketdata?start="+day_from;
+let day_price_url           = "https://api.awattar.at/v1/marketdata?start="+day_from;
  
 var raw_data                = await new Request(actual_price_url).loadJSON(); //Aktuellen Preis via API holen
 var raw_data_day            = await new Request(day_price_url).loadJSON();    //Preis für den aktuellen Tag via API holen
